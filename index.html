@@ -1,0 +1,213 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HOLOCRON | A Galaxy of Discoveries</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #070b18;
+    color: white;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    text-align: center;
+    overflow-x: hidden;
+}
+
+header {
+    padding: 30px 20px;
+}
+
+.logo {
+    font-size: 32px;
+    letter-spacing: 8px;
+    color: #ffe66d;
+    font-weight: bold;
+}
+
+.subtitle {
+    color: #929bb5;
+    margin-top: 10px;
+    font-size: 13px;
+    letter-spacing: 3px;
+}
+
+main {
+    max-width: 900px;
+    margin: 35px auto;
+    padding: 20px;
+}
+
+h1 {
+    font-size: clamp(30px, 6vw, 50px);
+    margin-bottom: 12px;
+}
+
+.intro {
+    color: #aab1c8;
+    margin-bottom: 35px;
+}
+
+.photo-container {
+    background: #111a30;
+    border: 1px solid #273552;
+    border-radius: 18px;
+    padding: 15px;
+    max-width: 600px;
+    margin: auto;
+    box-shadow: 0 0 50px #182b5060;
+}
+
+.photo-container img {
+    width: 100%;
+    height: 390px;
+    object-fit: contain;
+    background: #080d1c;
+    border-radius: 12px;
+}
+
+.info {
+    padding: 20px 10px;
+}
+
+.info h2 {
+    color: #ffe66d;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.info p {
+    color: #aab1c8;
+    line-height: 1.7;
+}
+
+button {
+    background: #ffe66d;
+    color: #111827;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 30px;
+    margin-top: 25px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: white;
+    transform: scale(1.05);
+}
+
+#status {
+    color: #aab1c8;
+    margin-top: 15px;
+}
+
+footer {
+    color: #69748e;
+    padding: 35px;
+    font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">HOLOCRON</div>
+    <div class="subtitle">A GALAXY OF DISCOVERIES</div>
+</header>
+
+<main>
+    <h1>Today's Discovery.</h1>
+    <p class="intro">
+        Explore a random corner of the Star Wars universe.
+    </p>
+
+    <div class="photo-container">
+        <img id="characterImage"
+             src=""
+             alt="Star Wars character">
+
+        <div class="info">
+            <h2 id="characterName">Discovering...</h2>
+            <p id="characterDescription">
+                A new discovery awaits.
+            </p>
+        </div>
+    </div>
+
+    <button onclick="discoverCharacter()">
+        HYPERSPACE JUMP →
+    </button>
+
+    <p id="status"></p>
+</main>
+
+<footer>
+    MAY THE FORCE BE WITH YOU.
+    <br><br>
+    A fan-made Star Wars project.
+</footer>
+
+<script>
+const API = "https://akabab.github.io/starwars-api/api/all.json";
+
+let characters = [];
+
+async function loadCharacters() {
+    const status = document.getElementById("status");
+
+    try {
+        status.textContent = "Connecting to the galaxy...";
+
+        const response = await fetch(API);
+
+        if (!response.ok) {
+            throw new Error("API unavailable");
+        }
+
+        characters = await response.json();
+
+        discoverCharacter();
+
+    } catch (error) {
+        status.textContent =
+            "Could not connect. Please try again later.";
+        console.error(error);
+    }
+}
+
+function discoverCharacter() {
+    if (characters.length === 0) return;
+
+    const character =
+        characters[Math.floor(Math.random() * characters.length)];
+
+    document.getElementById("characterName").textContent =
+        character.name;
+
+    document.getElementById("characterImage").src =
+        character.image;
+
+    document.getElementById("characterDescription").textContent =
+        `Discover ${character.name}, a character from the Star Wars universe.`;
+
+    document.getElementById("status").textContent =
+        "Discovery complete.";
+}
+
+loadCharacters();
+</script>
+
+</body>
+</html>
